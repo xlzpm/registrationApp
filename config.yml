@@ -1,0 +1,8 @@
+listen:
+  port: "0.0.0.0:8080"
+storage:
+  host: "localhost"
+  port: "5432"
+  database: "users"
+  username: "postgres"
+  password: "VfVf2006"
