@@ -12,7 +12,7 @@ type Listen struct {
 }
 
 type Storage struct {
-	Host     string `yaml:"localhost"`
+	Host     string `yaml:"host"`
 	Port     string `yaml:"port"`
 	DbName   string `yaml:"database"`
 	UserName string `yaml:"username"`
