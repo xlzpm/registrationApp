@@ -8,7 +8,8 @@ type Config struct {
 }
 
 type Listen struct {
-	Port string `yaml:"port"`
+	BindIp string `yaml:"bind_ip"`
+	Port   string `yaml:"port"`
 }
 
 type Storage struct {

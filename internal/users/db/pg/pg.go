@@ -12,17 +12,17 @@ import (
 	"github.com/xlzpm/pkg/pgclient"
 )
 
-type Repository interface {
+type Service interface {
 	Create(ctx context.Context, user *model.User) error
 	FindOne(ctx context.Context, email string, password string) (model.User, error)
 }
 
-type repository struct {
+type Repository struct {
 	client pgclient.Client
 }
 
-func NewRepository(client pgclient.Client) Repository {
-	return &repository{
+func NewRepository(client pgclient.Client) *Repository {
+	return &Repository{
 		client: client,
 	}
 }
@@ -31,7 +31,7 @@ func formatQuery(q string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(q, "\t", ""), "\n", " ")
 }
 
-func (r *repository) Create(ctx context.Context, user *model.User) error {
+func (r *Repository) Create(ctx context.Context, user *model.User) error {
 	log := initlog.InitLogger()
 
 	q := `	INSERT INTO users
@@ -59,7 +59,7 @@ func (r *repository) Create(ctx context.Context, user *model.User) error {
 	return nil
 }
 
-func (r *repository) FindOne(ctx context.Context, email string, password string) (model.User, error) {
+func (r *Repository) FindOne(ctx context.Context, email string, password string) (model.User, error) {
 	log := initlog.InitLogger()
 
 	q := `SELECT email, password FROM users WHERE email = $1 AND password = $2`
