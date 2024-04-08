@@ -38,11 +38,11 @@ func (r *Repository) Create(ctx context.Context, user *model.User) error {
 						(email, password)
 			VALUES 
 						($1, $2)
-			RETURNING id `
+			RETURNING id`
 
 	log.Info(fmt.Sprintf("SQL query: %s", formatQuery(q)))
 
-	if err := r.client.QueryRow(ctx, q, user.Email).Scan(&user.Id); err != nil {
+	if err := r.client.QueryRow(ctx, q, user.Email, user.Password).Scan(&user.Id); err != nil {
 		var pgErr *pgconn.PgError
 
 		if errors.As(err, &pgErr) {

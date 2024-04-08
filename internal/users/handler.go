@@ -1,7 +1,6 @@
 package users
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -44,29 +43,26 @@ func (h *Handler) Register(c *gin.Context) {
 	}
 }
 
+type signInInput struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 func (h *Handler) Autorization(c *gin.Context) {
 	log := initlog.InitLogger()
+	var input signInInput
 
-	email := c.Request.URL.Query().Get("email")
-	if email != "" {
-		log.Error("Empty field email")
+	if err := c.BindJSON(&input); err != nil {
+		log.Error(err.Error())
 	}
 
-	password := c.Request.URL.Query().Get("password")
-	if password != "" {
-		log.Error("Empty field email")
-	}
-
-	user, err := h.repository.FindOne(c.Request.Context(), email, password)
+	user, err := h.repository.FindOne(c.Request.Context(), input.Email, input.Password)
 	if err != nil {
 		log.Error(err.Error())
 	}
 
-	userBytes, err := json.Marshal(user)
-	if err != nil {
-		log.Error(err.Error())
-	}
-
-	c.Writer.WriteHeader(http.StatusOK)
-	c.Writer.Write(userBytes)
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"email":    user.Email,
+		"password": user.Password,
+	})
 }

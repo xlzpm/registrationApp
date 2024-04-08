@@ -25,7 +25,7 @@ var cfg *Config
 func MustConfig() *Config {
 	cfg = &Config{}
 
-	if err := cleanenv.ReadConfig("config.yml", cfg); err != nil {
+	if err := cleanenv.ReadConfig("config.yaml", cfg); err != nil {
 		panic("cannot read config " + err.Error())
 	}
 
